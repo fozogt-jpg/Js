@@ -1,26 +1,10 @@
 [
   {
-    "name": "Meteor Notes",
-    "developer": "SkyLabs",
-    "description": "A lightweight note taking app with cloud sync.",
-    "url": "https://example.com/meteor-notes/",
-    "preview_image": "https://example.com/assets/meteor-notes-preview.jpg",
-    "icon": "https://example.com/assets/meteor-notes-icon.png"
-  },
-  {
-    "name": "Pixel Painter",
-    "developer": "CanvasWorks",
-    "description": "Simple pixel art editor in the browser.",
-    "url": "https://example.com/pixel-painter/",
-    "preview_image": "https://example.com/assets/pixel-painter-preview.jpg",
-    "icon": "https://example.com/assets/pixel-painter-icon.png"
-  },
-  {
-    "name": "Taskflow",
-    "developer": "Flowly",
-    "description": "Kanban board with offline support.",
-    "url": "https://example.com/taskflow/",
-    "preview_image": "https://example.com/assets/taskflow-preview.jpg",
-    "icon": "https://example.com/assets/taskflow-icon.png"
+    "name": "Gamestation",
+    "developer": "Jxo",
+    "description": "A easy way to play games on the web.",
+    "url": "https://fozogt-jpg.github.io/apps/gs/index.html",
+    "preview_image": "https://fozogt-jpg.github.io/apps/gs/preview.png",
+    "icon": "https://fozogt-jpg.github.io/apps/gs/icon.png"
   }
 ]
