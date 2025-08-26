@@ -4,25 +4,46 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Jstore — Apps</title>
-  <link id="manifestLink" rel="manifest" />
+
+  <!-- Use a real manifest file hosted at the site root -->
+  <link rel="manifest" href="/manifest.json">
+
+  <meta name="theme-color" content="#29b6f6">
+
   <style>
     :root{
-      --bg:#000000; --primary:#29b6f6; --muted:#9aa3ad; --radius:12px;
-      font-family: Roboto, "Helvetica Neue", Arial, sans-serif; color-scheme: dark;
+      --bg:#000000;
+      --panel:#0b0b0b;
+      --primary:#29b6f6;
+      --accent:#0ea5ff;
+      --muted:#9aa3ad;
+      --card:#0f1720;
+      --radius:12px;
+      font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+      color-scheme: dark;
     }
     html,body{height:100%; margin:0; background:var(--bg); color:#e6eef6;}
     *{box-sizing:border-box}
 
+    /* Layout wrapper */
     .app-wrap{ display:flex; min-height:100vh; }
 
     /* Sidebar */
-    .sidebar { width:84px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-right:1px solid rgba(255,255,255,0.03); padding:12px 8px; display:flex; flex-direction:column; align-items:center; gap:12px; }
+    .sidebar {
+      width:84px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-right:1px solid rgba(255,255,255,0.03);
+      padding:12px 8px; display:flex; flex-direction:column; align-items:center; gap:12px;
+    }
     .brand { width:56px; height:56px; border-radius:12px; overflow:hidden; background:rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center; margin-bottom:6px; border:1px solid rgba(255,255,255,0.02); }
     .brand img{ width:44px; height:44px; object-fit:cover; }
     .nav-btn { width:56px; height:56px; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition: all .12s ease; color:var(--muted); background:transparent; border:0; }
     .nav-btn:hover { transform: translateY(-3px); color:var(--primary); background: rgba(46,199,255,0.03); }
     .nav-btn.active { color: white; box-shadow: 0 6px 18px rgba(0,0,0,0.6); background: linear-gradient(180deg, rgba(46,199,255,0.06), rgba(46,199,255,0.02)); border: 1px solid rgba(46,199,255,0.12); }
 
+    .nav-label { font-size:11px; color:var(--muted); text-align:center; padding:6px 4px; }
+
+    /* Main content */
     .main { flex:1; padding:18px; max-width:1200px; margin:0 auto; width:100%; }
     header{ display:flex; align-items:center; gap:16px; margin-bottom:16px; }
     .logo { display:flex; align-items:center; gap:10px; }
@@ -49,12 +70,11 @@
     .card .info p{ margin:6px 0 0 0; color:var(--muted); font-size:13px; }
     .card .actions { display:flex; flex-direction:column; gap:8px; align-items:flex-end; }
 
-    /* Modal + preview area — image is shown fully (no cropping) and shrunk to fit */
+    /* Preview area: full image shown (no cropping) and shrunk to fit */
     .modal { position:fixed; inset:0; display:none; align-items:flex-start; justify-content:center; z-index:60; padding:40px; overflow:auto; background: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.6)); }
     .modal.open{ display:flex; }
     .panel{ width:1100px; max-width:calc(100% - 48px); border-radius:14px; overflow:hidden; background: linear-gradient(180deg, rgba(10,12,15,0.96), rgba(8,10,12,0.98)); border:1px solid rgba(255,255,255,0.03); box-shadow:0 20px 60px rgba(0,0,0,0.8); }
 
-    /* Preview wrapper maintains 16:9 area but the <img> uses object-fit: contain so the whole image is visible and scaled to fit. */
     .preview-wrap {
       width:100%;
       aspect-ratio: 16 / 9;
@@ -70,20 +90,14 @@
       max-height:100%;
       width:auto;
       height:auto;
-      object-fit:contain; /* ensures full image is visible and shrunk to fit */
+      object-fit:contain; /* show full image, shrink to fit */
       object-position:center;
-      background-color:#000; /* letterbox color */
+      background-color:#000;
       -webkit-user-drag: none;
       user-select:none;
     }
-    .preview-overlay {
-      position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.04)); pointer-events:none;
-    }
-    .app-meta {
-      position:absolute; left:18px; bottom:18px; z-index:2;
-      display:flex; gap:12px; align-items:center; padding:10px; border-radius:10px;
-      background: linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0.08));
-    }
+    .preview-overlay { position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.04)); pointer-events:none; }
+    .app-meta { position:absolute; left:18px; bottom:18px; z-index:2; display:flex; gap:12px; align-items:center; padding:10px; border-radius:10px; background: linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0.08)); }
     .app-icon{ width:96px; height:96px; border-radius:18px; overflow:hidden; background:#071013; flex-shrink:0; }
     .app-icon img{ width:100%; height:100%; object-fit:cover; }
 
@@ -127,7 +141,7 @@
       </button>
 
       <div style="flex:1"></div>
-      <div class="nav-label" style="font-size:11px; color:var(--muted); text-align:center; padding:6px 4px;">Jstore</div>
+      <div class="nav-label">Jstore</div>
     </aside>
 
     <!-- Main -->
@@ -165,10 +179,10 @@
     </main>
   </div>
 
-  <!-- Modal showing full preview (shrunken to fit) -->
+  <!-- Modal showing full preview (scaled to fit) -->
   <div class="modal" id="appModal" role="dialog" aria-hidden="true">
     <div class="panel" role="document">
-      <div class="preview-wrap" id="previewWrap">
+      <div class="preview-wrap">
         <img id="previewImg" alt="App preview" src="" />
         <div class="preview-overlay"></div>
         <div class="app-meta" id="appMeta">
@@ -197,216 +211,166 @@
   </div>
 
 <script>
-/* ========== Config & DOM refs ========== */
-const APPS_JSON_URL = 'https://fozogt-jpg.github.io/Js/apps/apps.json';
-const appsGrid = document.getElementById('appsGrid');
-const searchInput = document.getElementById('searchInput');
-const refreshBtn = document.getElementById('refreshBtn');
+  // Configuration
+  const APPS_JSON_URL = 'https://fozogt-jpg.github.io/Js/apps/apps.json';
 
-const modal = document.getElementById('appModal');
-const previewImg = document.getElementById('previewImg');
-const detailIcon = document.getElementById('detailIcon');
-const detailName = document.getElementById('detailName');
-const detailDev = document.getElementById('detailDev');
-const detailTitle = document.getElementById('detailTitle');
-const detailDescription = document.getElementById('detailDescription');
-const installBtn = document.getElementById('installBtn');
-const closeBtn = document.getElementById('closeBtn');
+  // DOM refs
+  const appsGrid = document.getElementById('appsGrid');
+  const searchInput = document.getElementById('searchInput');
+  const refreshBtn = document.getElementById('refreshBtn');
 
-let apps = [];
-let currentApp = null;
+  const modal = document.getElementById('appModal');
+  const previewImg = document.getElementById('previewImg');
+  const detailIcon = document.getElementById('detailIcon');
+  const detailName = document.getElementById('detailName');
+  const detailDev = document.getElementById('detailDev');
+  const detailTitle = document.getElementById('detailTitle');
+  const detailDescription = document.getElementById('detailDescription');
+  const installBtn = document.getElementById('installBtn');
+  const closeBtn = document.getElementById('closeBtn');
 
-/* ========== Apps loading & rendering ========== */
-async function loadApps(){
-  try {
-    const resp = await fetch(APPS_JSON_URL, {cache: "no-store"});
-    if(!resp.ok) throw new Error('Network response not ok');
-    const json = await resp.json();
-    apps = Array.isArray(json) ? json : (json.apps || []);
-    try { localStorage.setItem('jstore_apps_cache', JSON.stringify(apps)); } catch(_) {}
-    renderApps(apps);
-  } catch (err) {
-    console.warn('Failed to load remote apps.json:', err);
+  let apps = [];
+  let currentApp = null;
+
+  // Fetch apps.json (network-first, fallback to local /apps.json or localStorage)
+  async function loadApps(){
     try {
-      const fallbackResp = await fetch('/apps.json');
-      if (fallbackResp.ok){
-        const localJson = await fallbackResp.json();
-        apps = Array.isArray(localJson) ? localJson : (localJson.apps || []);
-        renderApps(apps);
-        return;
-      }
-    } catch(e){}
-    const cached = localStorage.getItem('jstore_apps_cache');
-    if (cached){
+      const resp = await fetch(APPS_JSON_URL, {cache: "no-store"});
+      if(!resp.ok) throw new Error('Network response not ok');
+      const json = await resp.json();
+      apps = Array.isArray(json) ? json : (json.apps || []);
+      try { localStorage.setItem('jstore_apps_cache', JSON.stringify(apps)); } catch(_) {}
+      renderApps(apps);
+    } catch (err) {
+      console.warn('Failed to load remote apps.json:', err);
       try {
-        apps = JSON.parse(cached);
-        renderApps(apps);
-        return;
+        const fallbackResp = await fetch('/apps.json');
+        if (fallbackResp.ok){
+          const localJson = await fallbackResp.json();
+          apps = Array.isArray(localJson) ? localJson : (localJson.apps || []);
+          renderApps(apps);
+          return;
+        }
       } catch(e){}
+      const cached = localStorage.getItem('jstore_apps_cache');
+      if (cached){
+        try {
+          apps = JSON.parse(cached);
+          renderApps(apps);
+          return;
+        } catch(e){}
+      }
+      appsGrid.innerHTML = '<div style="grid-column:1/-1; padding:20px; text-align:center; color:var(--muted)">Unable to load apps. Check apps.json URL or network.</div>';
     }
-    appsGrid.innerHTML = '<div style="grid-column:1/-1; padding:20px; text-align:center; color:var(--muted)">Unable to load apps. Check apps.json URL or network.</div>';
   }
-}
 
-function renderApps(list){
-  const q = (searchInput.value || '').trim().toLowerCase();
-  const filtered = list.filter(a => {
-    if(!a.name) return true;
-    if(!q) return true;
-    return (a.name + ' ' + (a.developer||'') + ' ' + (a.description||'')).toLowerCase().includes(q);
-  });
-  if(filtered.length === 0){
-    appsGrid.innerHTML = '<div style="grid-column:1/-1; padding:20px; text-align:center; color:var(--muted)">No apps found.</div>';
-    return;
+  function renderApps(list){
+    const q = (searchInput.value || '').trim().toLowerCase();
+    const filtered = list.filter(a => {
+      if(!a.name) return true;
+      if(!q) return true;
+      return (a.name + ' ' + (a.developer||'') + ' ' + (a.description||'')).toLowerCase().includes(q);
+    });
+    if(filtered.length === 0){
+      appsGrid.innerHTML = '<div style="grid-column:1/-1; padding:20px; text-align:center; color:var(--muted)">No apps found.</div>';
+      return;
+    }
+    appsGrid.innerHTML = '';
+    filtered.forEach((app, idx) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="icon"><img src="${escapeHtml(app.icon || '')}" alt="${escapeHtml(app.name || 'app icon')}" onerror="this.style.background='#071013'; this.src='images/default-icon.png'"></div>
+        <div class="info">
+          <h3>${escapeHtml(app.name || ('App ' + (idx+1)))}</h3>
+          <p>${escapeHtml(app.developer || '')}</p>
+        </div>
+        <div class="actions">
+          <button class="btn" data-idx="${idx}">Install</button>
+          <button class="btn ghost" data-open="${idx}">Open</button>
+        </div>
+      `;
+      card.querySelector('button.btn').addEventListener('click', ()=> openAppUrl(app));
+      card.querySelector('button.ghost').addEventListener('click', ()=> showDetails(app));
+      appsGrid.appendChild(card);
+    });
   }
-  appsGrid.innerHTML = '';
-  filtered.forEach((app, idx) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <div class="icon"><img src="${escapeHtml(app.icon || '')}" alt="${escapeHtml(app.name || 'app icon')}" onerror="this.style.background='#071013'; this.src='images/default-icon.png'"></div>
-      <div class="info">
-        <h3>${escapeHtml(app.name || ('App ' + (idx+1)))}</h3>
-        <p>${escapeHtml(app.developer || '')}</p>
-      </div>
-      <div class="actions">
-        <button class="btn" data-idx="${idx}">Install</button>
-        <button class="btn ghost" data-open="${idx}">Open</button>
-      </div>
-    `;
-    card.querySelector('button.btn').addEventListener('click', ()=> openAppUrl(app));
-    card.querySelector('button.ghost').addEventListener('click', ()=> showDetails(app));
-    appsGrid.appendChild(card);
-  });
-}
 
-/* ========== Show details: display full preview scaled to fit ========== */
-function showDetails(app){
-  currentApp = app;
-  detailIcon.innerHTML = `<img src="${escapeHtml(app.icon||'')}" alt="${escapeHtml(app.name||'')}" onerror="this.src='images/default-icon.png'">`;
-  detailName.textContent = app.name || 'Unnamed App';
-  detailDev.textContent = app.developer || '';
-  detailTitle.textContent = app.name || 'App';
-  detailDescription.textContent = app.description || '';
-  installBtn.onclick = () => openAppUrl(app);
+  function showDetails(app){
+    currentApp = app;
+    detailIcon.innerHTML = `<img src="${escapeHtml(app.icon||'')}" alt="${escapeHtml(app.name||'')}" onerror="this.src='images/default-icon.png'">`;
+    detailName.textContent = app.name || 'Unnamed App';
+    detailDev.textContent = app.developer || '';
+    detailTitle.textContent = app.name || 'App';
+    detailDescription.textContent = app.description || '';
+    installBtn.onclick = () => openAppUrl(app);
 
-  // show the full preview image and let CSS shrink it (object-fit: contain)
-  const previewUrl = app.preview_image || '';
-  if (previewUrl) {
-    // add cache-bust to avoid stale images when testing
-    previewImg.src = previewUrl + (previewUrl.includes('?') ? '&' : '?') + 'cb=' + Date.now();
-  } else {
+    // Show the full preview image (object-fit: contain makes it shrink to fit)
+    const previewUrl = app.preview_image || '';
+    if (previewUrl) {
+      // cache-bust param to help during development
+      previewImg.src = previewUrl + (previewUrl.includes('?') ? '&' : '?') + 'cb=' + Date.now();
+    } else {
+      previewImg.src = '';
+    }
+
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDetails(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    currentApp = null;
     previewImg.src = '';
+    document.body.style.overflow = '';
   }
 
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden','false');
-  document.body.style.overflow = 'hidden';
-}
+  function openAppUrl(app){
+    if(!app || !app.url){
+      alert('No URL provided for this app.');
+      return;
+    }
+    window.open(app.url, '_blank', 'noopener,noreferrer');
+  }
 
-function closeDetails(){
-  modal.classList.remove('open');
-  modal.setAttribute('aria-hidden','true');
-  currentApp = null;
-  previewImg.src = '';
-  document.body.style.overflow = '';
-}
+  function escapeHtml(s){
+    if(s == null) return '';
+    return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+  }
 
-function openAppUrl(app){
-  if(!app || !app.url){ alert('No URL provided for this app.'); return; }
-  window.open(app.url, '_blank', 'noopener,noreferrer');
-}
-
-function escapeHtml(s){
-  if(s == null) return '';
-  return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
-}
-
-/* Sidebar nav behaviour */
-document.querySelectorAll('.nav-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=> {
-    document.querySelectorAll('.nav-btn').forEach(b=>{ b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
-    btn.classList.add('active'); btn.setAttribute('aria-pressed','true');
+  // Sidebar nav behaviour
+  document.querySelectorAll('.nav-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=> {
+      document.querySelectorAll('.nav-btn').forEach(b=>{ b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+      btn.classList.add('active'); btn.setAttribute('aria-pressed','true');
+      // future: switch panels (home / categories / library / settings)
+    });
   });
-});
 
-/* Events */
-searchInput.addEventListener('input', ()=> renderApps(apps));
-refreshBtn.addEventListener('click', ()=> loadApps());
-closeBtn.addEventListener('click', closeDetails);
-modal.addEventListener('click', (e)=> { if(e.target === modal) closeDetails(); });
+  // basic event bindings
+  searchInput.addEventListener('input', ()=> renderApps(apps));
+  refreshBtn.addEventListener('click', ()=> loadApps());
+  closeBtn.addEventListener('click', closeDetails);
+  modal.addEventListener('click', (e)=> { if(e.target === modal) closeDetails(); });
 
-/* ========== Embedded manifest + service worker (blobs) ========== */
-(function setupEmbeddedPWA(){
-  const manifest = {
-    name: "Jstore",
-    short_name: "Jstore",
-    description: "A Progressive Web App store — Jstore",
-    start_url: "/",
-    scope: "/",
-    display: "standalone",
-    background_color: "#000000",
-    theme_color: "#29b6f6",
-    icons: [
-      { src: "images/icon-192.png", sizes: "192x192", type: "image/png" },
-      { src: "images/icon-512.png", sizes: "512x512", type: "image/png" }
-    ]
-  };
-
-  try {
-    const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/manifest+json'});
-    const manifestUrl = URL.createObjectURL(manifestBlob);
-    document.getElementById('manifestLink').setAttribute('href', manifestUrl);
-  } catch (e) { console.warn('Could not create manifest blob:', e); }
-
-  const swSource = `
-    const CACHE_NAME = 'jstore-cache-v1';
-    const PRECACHE_URLS = ['/', '/index.html', 'images/logo.png', 'images/default-icon.png', 'images/icon-192.png', 'images/icon-512.png', '/apps.json'];
-
-    self.addEventListener('install', event => {
-      event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_URLS).catch(err => console.warn('Precache failed',err))).then(()=>self.skipWaiting()));
-    });
-
-    self.addEventListener('activate', event => {
-      event.waitUntil(caches.keys().then(keys => Promise.all(keys.map(k => { if(k !== CACHE_NAME) return caches.delete(k); }))).then(()=>self.clients.claim()));
-    });
-
-    self.addEventListener('fetch', event => {
-      const request = event.request;
-      if (request.url.includes('/apps.json') || request.url.includes('fozogt-jpg.github.io/Js/apps/apps.json')) {
-        event.respondWith(fetch(request).then(response => { const copy = response.clone(); caches.open(CACHE_NAME).then(cache => cache.put(request, copy)); return response; }).catch(_ => caches.match(request).then(r => r || caches.match('/apps.json'))));
-        return;
-      }
-      if (request.mode === 'navigate' || (request.headers.get('accept') || '').includes('text/html')) {
-        event.respondWith(caches.match('/index.html').then(cached => cached || fetch(request).catch(()=>caches.match('/index.html'))));
-        return;
-      }
-      event.respondWith(caches.match(request).then(cachedResponse => {
-        if (cachedResponse) return cachedResponse;
-        return fetch(request).then(networkResp => {
-          if(request.method === 'GET' && networkResp && networkResp.status === 200 && networkResp.type !== 'opaque') {
-            const copy = networkResp.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-          }
-          return networkResp;
-        }).catch(()=>{});
-      }));
-    });
-  `;
-
+  // register service worker from a real file at /sw.js
   if ('serviceWorker' in navigator) {
-    try {
-      const swBlob = new Blob([swSource], {type: 'application/javascript'});
-      const swUrl = URL.createObjectURL(swBlob);
-      navigator.serviceWorker.register(swUrl, {scope: '/'})
-        .then(reg => { console.log('Embedded SW registered:', reg.scope); try{ URL.revokeObjectURL(swUrl); }catch(e){} })
-        .catch(err => console.warn('Service worker registration failed:', err));
-    } catch (e) { console.warn('Failed to create/register SW blob:', e); }
-  } else { console.warn('Service workers not supported in this browser.'); }
-})();
+    window.addEventListener('load', async () => {
+      try {
+        const reg = await navigator.serviceWorker.register('/sw.js');
+        console.log('Service Worker registered:', reg.scope);
+      } catch (err) {
+        console.warn('Service Worker registration failed:', err);
+      }
+    });
+  } else {
+    console.warn('Service workers not supported in this browser.');
+  }
 
-/* Initial load */
-loadApps();
+  // initial load
+  loadApps();
 </script>
 </body>
 </html>
