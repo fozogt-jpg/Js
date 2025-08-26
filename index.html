@@ -6,7 +6,7 @@
   <title>Jstore — Apps</title>
 
   <!-- Use a real manifest file hosted at the site root -->
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="manifest.json">
 
   <meta name="theme-color" content="#29b6f6">
 
@@ -359,7 +359,7 @@
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg = await navigator.serviceWorker.register('/sw.js');
+        const reg = await navigator.serviceWorker.register('sw.js');
         console.log('Service Worker registered:', reg.scope);
       } catch (err) {
         console.warn('Service Worker registration failed:', err);
