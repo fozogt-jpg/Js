@@ -6,5 +6,13 @@
     "url": "https://fozogt-jpg.github.io/Js/apps/gs/index.html",
     "preview_image": "https://fozogt-jpg.github.io/Js/apps/gs/preview.png",
     "icon": "https://fozogt-jpg.github.io/Js/apps/gs/icon.png"
+  },
+    {
+    "name": "Minecraft",
+    "developer": "Jxo",
+    "description": "A easy way to play minecraft on the web.",
+    "url": "https://usejxo.github.io/Jlauncher/",
+    "preview_image": "https://usejxo.github.io/Jlauncher/images/bedrock/display.png",
+    "icon": "https://usejxo.github.io/Jlauncher/images/icons/icons.png"
   }
 ]
