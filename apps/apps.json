@@ -1,11 +1,11 @@
 [
   {
-    "name": "Gamestation",
+    "name": "Nexus",
     "developer": "Jxo",
-    "description": "A easy way to play games on the web.",
-    "url": "https://fozogt-jpg.github.io/Js/apps/gs/index.html",
-    "preview_image": "https://fozogt-jpg.github.io/Js/apps/gs/preview.png",
-    "icon": "https://fozogt-jpg.github.io/Js/apps/gs/icon.png"
+    "description": "A gaming launcher simlair to Steam + Ps5",
+    "url": "https://Hpkproject.github.io/install?name=Nexus&json=https://fozogt-jpg.github.io/hpk/all.json",
+    "preview_image": "https://jxoj.github.io/Nexus/jsasstes/background.gif",
+    "icon": "https://jxoj.github.io/Nexus/jsasstes/icon.png"
   },
     {
     "name": "Minecraft",
